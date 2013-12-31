@@ -2,9 +2,6 @@
 
 """
 Generic Helper Functions
-
-__author__ : Çağatay Tengiz
-__date__   : 25.12.2013
 """
 
 import datetime
@@ -45,11 +42,15 @@ def is_string_numeric(aval, ignore_empty_string=True):
         return False
 
 
-def format_date(dt, _typ):
+def datetime_to_str(dt, _typ):
+    """Converts a date/time value to string.
+
+    :param dt:
+    :param _typ:
+    :return: :rtype:
     """
-    Bu metod json için tarih'i string'e çevirir.
-    TODO : Localization'a göre formatı ayarla
-    """
+
+    #todo: get format from locale settings
     if (_typ == datetime.date) and (dt):
         return dt.strftime('%d.%m.%Y')
     elif _typ == datetime.datetime:
