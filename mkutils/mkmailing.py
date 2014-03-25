@@ -25,6 +25,7 @@ def send_mail( msg_from,
                smtp_start_tls=True
                ):
 
+
     # Create message container - the correct MIME type is multipart/alternative.
     msg = MIMEMultipart('mixed')
     #Eskisi : msg = MIMEMultipart('alternative')
