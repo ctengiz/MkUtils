@@ -42,13 +42,14 @@ def is_string_numeric(aval, ignore_empty_string=True):
         return False
 
 
-def datetime_to_str(dt, _typ):
+def datetime_to_str(dt):
     """Converts a date/time value to string.
 
     :param dt:
-    :param _typ:
     :return: :rtype:
     """
+
+    _typ = type(dt)
 
     #todo: get format from locale settings
     if (_typ == datetime.date) and (dt):
@@ -60,3 +61,15 @@ def datetime_to_str(dt, _typ):
     else:
         return None
 
+
+def current_year():
+    return datetime.datetime.today().year
+
+
+def current_month():
+    return datetime.datetime.today().month
+
+
+def current_date_as_str():
+    dt = datetime.date.today()
+    return dt.strftime('%d.%m.%Y')
