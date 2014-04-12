@@ -57,7 +57,7 @@ def sa_to_dict(obj, convert_to_str=False, return_in_array=True):
                     or isinstance(item[1], datetime.time)
                     or isinstance(item[1], datetime.datetime)
             ):
-                row_dict[item[0]] = datetime_to_str(item[1], type(item[1]))
+                row_dict[item[0]] = datetime_to_str(item[1])
             elif isinstance(item[1], list):
                 continue
                 #row_dict[item[0]] = sa_to_dict(item[1])

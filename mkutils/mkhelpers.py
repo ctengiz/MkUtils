@@ -52,12 +52,15 @@ def datetime_to_str(dt):
     _typ = type(dt)
 
     #todo: get format from locale settings
-    if (_typ == datetime.date) and (dt):
+    if _typ == datetime.date:
         return dt.strftime('%d.%m.%Y')
+
     elif _typ == datetime.datetime:
         return dt.strftime('%d.%m.%Y %H:%M')
+
     elif _typ == datetime.time:
         return dt.strftime('%H:%M')
+
     else:
         return None
 
