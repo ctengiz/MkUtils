@@ -10,6 +10,7 @@ __date__   : 25.12.2013
 import json
 import datetime
 from mkutils.mkhelpers import datetime_to_str
+from sqlalchemy.types import String, Text
 
 
 def sa_to_json(obj):
@@ -83,7 +84,27 @@ def sa_to_dict(obj, convert_to_str=False, return_in_array=True):
         return result_array
 
 
+def formdata_to_sa(data, atbl, arec):
+    """
+    Maps contents of a html request data (get / post) to fields (members) of a SqlAlchemy mapping class.
+    Posted html controls' names should be the same with the class' members.
 
+    :param data: Form data from bottle.request or compatible dict object
+    :param atbl: Mapping SqlAlchemy class
+    :param arec: Result record
+    """
+    if not arec:
+        arec = atbl()
 
+    for fld in data:
+        if data[fld] == '':
+            data[fld] = None
+        else:
+            if fld in atbl.__mapper__.columns:
+                atype = atbl.__mapper__.columns[fld].type
+                if (isinstance(atype, String) and
+                        (not isinstance(atype, Text))):
+                    data[fld] = data[fld][:atbl.__mapper__.columns[fld].type.length]
+                setattr(arec, fld, data[fld])
 
 
