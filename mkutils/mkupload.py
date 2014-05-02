@@ -136,7 +136,7 @@ def upload_file(db,
 
     db.commit()
 
-    return arw.id
+    return arw.id, uuid
 
 
 def convert_db_images():
