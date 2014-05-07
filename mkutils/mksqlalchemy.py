@@ -106,3 +106,11 @@ def formdata_to_sa(data, atbl, arec):
                         (not isinstance(atype, Text))):
                     data[fld] = data[fld][:atbl.__mapper__.columns[fld].type.length]
                 setattr(arec, fld, data[fld])
+
+
+def print_sql():
+    """
+    Prin
+    """
+    pass
+
