@@ -5,6 +5,8 @@ Generic Helper Functions
 """
 
 import datetime
+import configparser
+import base64
 
 
 def is_numeric(aval):
@@ -76,3 +78,16 @@ def current_month():
 def current_date_as_str():
     dt = datetime.date.today()
     return dt.strftime('%d.%m.%Y')
+
+def read_config_file(path):
+    aconfig = configparser.ConfigParser()
+    with open('%s/config.ini' % path, 'r', encoding='utf-8') as f:
+        aconfig.read_file(f)
+
+    return aconfig
+
+
+def decode_config_base64(decoded_string):
+    return base64.b64decode(decoded_string.encode("ascii")[2:-1]).decode("utf-8")
+
+
