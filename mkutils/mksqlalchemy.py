@@ -99,13 +99,13 @@ def formdata_to_sa(data, atbl, arec):
     for fld in data:
         if data[fld] == '':
             data[fld] = None
-        else:
-            if fld in atbl.__mapper__.columns:
-                atype = atbl.__mapper__.columns[fld].type
-                if (isinstance(atype, String) and
-                        (not isinstance(atype, Text))):
-                    data[fld] = data[fld][:atbl.__mapper__.columns[fld].type.length]
-                setattr(arec, fld, data[fld])
+        if fld in atbl.__mapper__.columns:
+            atype = atbl.__mapper__.columns[fld].type
+            if isinstance(atype, String) \
+                    and not isinstance(atype, Text)\
+                    and data[fld]:
+                data[fld] = data[fld][:atbl.__mapper__.columns[fld].type.length]
+            setattr(arec, fld, data[fld])
 
 
 def print_sql():
