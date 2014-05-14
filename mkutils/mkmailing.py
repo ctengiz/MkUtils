@@ -39,7 +39,7 @@ def send_mail( msg_from,
     else:
         msg['From'] = formataddr((msg_from,  msg_from))
 
-    if isinstance(msg_to, list):
+    if isinstance(msg_to, list) or isinstance(msg_to, tuple):
         msg['To'] = COMMASPACE.join(msg_to)
     else:
         msg['To'] = msg_to
