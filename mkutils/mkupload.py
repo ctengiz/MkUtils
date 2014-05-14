@@ -108,6 +108,13 @@ def upload_file(db,
     arw.defi = defi
 
     if _is_image:
+        try:
+            thumb_size = int(thumb_size)
+            image_size = int(image_size)
+        except:
+            thumb_size=200
+            image_size=1024
+
         cnt_thb = resize_image(afile.file, thumb_size, True)  #thumbnail
         cnt_bin = resize_image(afile.file, image_size)        #Orjinal Boy
     else:
