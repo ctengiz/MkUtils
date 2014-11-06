@@ -11,6 +11,7 @@ import json
 import datetime
 from mkutils.mkhelpers import datetime_to_str
 from sqlalchemy.types import String, Text
+import sqlalchemy
 
 
 def sa_to_json(obj):
@@ -49,19 +50,25 @@ def sa_to_dict(obj, convert_to_str=False, return_in_array=True):
     for row in source_array:
         row_dict = {}
         for item in row.__dict__.items():
-            if item[0][0] is '_':
+            if isinstance(item[1], sqlalchemy.ext.declarative.api.DeclarativeMeta):
                 continue
+
+            if isinstance(item[1], sqlalchemy.orm.state.InstanceState):
+                continue
+
+            if isinstance(item[1], list):
+                continue
+                #row_dict[item[0]] = sa_to_dict(item[1])
+
             if item[0] is 'session':
                 continue
+
             if (
                     isinstance(item[1], datetime.date)
                     or isinstance(item[1], datetime.time)
                     or isinstance(item[1], datetime.datetime)
             ):
                 row_dict[item[0]] = datetime_to_str(item[1])
-            elif isinstance(item[1], list):
-                continue
-                #row_dict[item[0]] = sa_to_dict(item[1])
             else:
                 #print item[0], item[1]
                 if item[1] is None:
