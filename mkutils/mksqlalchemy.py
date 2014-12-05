@@ -28,6 +28,35 @@ def sa_to_json(obj):
     return json.dumps(sa_to_dict(obj))
 
 
+def sa_row_to_dict(row, convert_to_str=False):
+    row_dict = {}
+
+    for fld in dir(row):
+        if fld[:2] != '__' and fld[:4] != '_sa_' and fld != "_decl_class_registry":
+            _attr = getattr(row, fld)
+
+            if (isinstance(_attr, str) or
+                    isinstance(_attr, bool)):
+                row_dict[fld] = _attr
+
+            elif (isinstance(_attr, datetime.date) or
+                      isinstance(_attr, datetime.time) or
+                      isinstance(_attr  , datetime.datetime)):
+                row_dict[fld] = datetime_to_str(_attr)
+
+            elif isinstance(_attr, type(None)):
+                row_dict[fld] = None
+
+            elif (isinstance(_attr, int) or isinstance(_attr, float)):
+                if convert_to_str:
+                    row_dict[fld] = str(_attr)
+                else:
+                    row_dict[fld] = str(_attr)
+
+    return row_dict
+
+
+
 def sa_to_dict(obj, convert_to_str=False, return_in_array=True):
     """
     Converts an sqlalchemy query result set array of dicts.
@@ -48,40 +77,7 @@ def sa_to_dict(obj, convert_to_str=False, return_in_array=True):
         source_array.append(obj)
 
     for row in source_array:
-        row_dict = {}
-        for item in row.__dict__.items():
-            if isinstance(item[1], sqlalchemy.ext.declarative.api.DeclarativeMeta):
-                continue
-
-            if isinstance(item[1], sqlalchemy.orm.state.InstanceState):
-                continue
-
-            if isinstance(item[1], list):
-                continue
-                #row_dict[item[0]] = sa_to_dict(item[1])
-
-            if item[0] is 'session':
-                continue
-
-            if (
-                    isinstance(item[1], datetime.date)
-                    or isinstance(item[1], datetime.time)
-                    or isinstance(item[1], datetime.datetime)
-            ):
-                row_dict[item[0]] = datetime_to_str(item[1])
-            else:
-                #print item[0], item[1]
-                if item[1] is None:
-                    row_dict[item[0]] = None
-                elif item[1] is True:
-                    row_dict[item[0]] = True
-                elif item[1] is False:
-                    row_dict[item[0]] = False
-                else:
-                    if convert_to_str:
-                        row_dict[item[0]] = str(item[1])
-                    else:
-                        row_dict[item[0]] = item[1]
+        row_dict = sa_row_to_dict(row, convert_to_str)
 
         result_array.append(row_dict)
 
@@ -117,7 +113,7 @@ def formdata_to_sa(data, atbl, arec):
 
 def print_sql():
     """
-    Prin
+    Print
     """
     pass
 
